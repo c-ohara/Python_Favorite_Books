@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel = "stylesheet" href = "{% static 'main/css/style.css' %}">
+</head>
+<body>
+    <div id = "wrapper" class = "container col-12">
+        <nav class="navbar navbar-expand-lg navbar-dark align-top bg-primary">
+            <h1 class= "col-9">Welcome, {{ Name }}!</h1>
+            <a class = "col-2 text-light" href = "/logout">Log out</a>
+        </nav>
+        <div id = "add_book" class = "container col-5 d-inline-block align-top mr-3">
+            <h1>Add a Favorite Book</h1>
+            <form action = "/addbook" method = "post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="title" class = "col-3 d-inline-block">Title: </label>
+                    <input type="text" class="col-8 form-control d-inline-block" name = "title">
+                </div>
+                <div class="form-group">
+                    <label for="description" class = "col-3 d-inline-block align-top">Description: </label>
+                    <textarea class="col-8 form-control d-inline-block align-top" name = "description" rows = "6"></textarea>
+                </div>
+                <button type = "submit" class = "btn btn-primary">Add</button>
+            </form>
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+        </div>
+        <div id = "booklist" class = "container col-6 d-inline-block align-top">
+            <h1>All Books</h1> 
+            {% for book in Books %}
+                <h4 class = "text-primary"><a href = "/book/{{ book.id }}">{{ book.title }}</a></h4>
+                <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</p>
+                {% if book in Faves %}
+                    <p class = "text-weight-light font-italic d-inline-block">This is one of your favorites. </p>
+                    <a href = "/unfavorite/{{ book.id }}">Remove</a>
+                {% else %}
+                    <a href = "/addfavorite/{{ book.id }}">Add to Favorites</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

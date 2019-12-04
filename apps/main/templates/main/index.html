@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel = "stylesheet" href = "{% static 'main/css/style.css' %}">
+</head>
+<body>
+    <div id = "wrapper" class = "container mt-4 col-12">
+        <div id = "register" class = "container col-6 d-inline-block align-top">
+            <h1>Registration</h1>
+            <form action = "/register" method = "post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name" class = "col-3 d-inline-block">First Name: </label>
+                    <input type="text" class="col-8 form-control d-inline-block" name = "first_name">
+                </div>
+                <div class="form-group">
+                    <label for="last_name" class = "col-3 d-inline-block">Last Name: </label>
+                    <input type="text" class="col-8 form-control d-inline-block" name = "last_name">
+                </div>
+                <div class="form-group">
+                    <label for="email" class = "col-3 d-inline-block">Email: </label>
+                    <input type="text" class="col-8 form-control d-inline-block" name = "email">
+                </div>
+                <div class="form-group">
+                    <label for="password" class = "col-3 d-inline-block">Password: </label>
+                    <input type="password" class="col-8 form-control d-inline-block" name = "password">
+                </div>
+                <div class="form-group">
+                    <label for="pwcheck" class = "col-3 d-inline-block">Confirm PW: </label>
+                    <input type="password" class="col-8 form-control d-inline-block" name = "pwcheck">
+                </div>
+                <button type = "submit" class = "btn btn-primary">Register</button>
+            </form>
+        </div>
+        <div id = "Login" class = "container col-5 d-inline-block align-top">
+            <h1>Login</h1>
+            <form action = "/login" method = "post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email" class = "col-3 d-inline-block">Email: </label>
+                    <input type="text" class="col-8 form-control d-inline-block" name = "email">
+                </div>
+                <div class="form-group">
+                    <label for="password" class = "col-3 d-inline-block">Password: </label>
+                    <input type="password" class="col-8 form-control d-inline-block" name = "password">
+                </div>
+                <button type = "submit" class = "btn btn-primary">Login</button>
+            </form>
+        </div>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

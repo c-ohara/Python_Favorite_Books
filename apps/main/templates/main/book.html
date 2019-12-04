@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel = "stylesheet" href = "{% static 'main/css/style.css' %}">
+</head>
+<body>
+    <div id = "wrapper" class = "container col-12">
+        <nav class="navbar navbar-expand-lg navbar-dark align-top bg-primary">
+            <h1 class= "col-9">Welcome, {{ Name }}!</h1>
+            <a class = "col-2 text-light" href = "/logout">Log out</a>
+        </nav>
+        <div id = "add_book" class = "container col-5 d-inline-block align-top mr-3">
+            {% if User == Added %}
+                <form action = "/update" method = "post">
+                    <div class="form-group mt-2">
+                        <label for="title" class = "col-3 d-inline-block"><h5>Title: </h5></label>
+                        <input type="text" class="col-8 form-control d-inline-block" name = "title" value = "{{ Title }}">
+                    </div>
+                    <h5>Added by: {{ Added.first_name }} {{ Added.last_name }}</h5>
+                    <h5>Added on: {{ Dates.created_at |date:"Y-m-d" }}</h5>
+                    <h5>Updated on: {{ Dates.updated_at |date:"Y-m-d" }}</h5>
+                    <div class="form-group mt-2">
+                        <label for="description" class = "col-3 d-inline-block align-top"><h5>Description: </h5></label>
+                        <textarea class="col-8 form-control d-inline-block align-top" name = "description" rows = "6">{{ Description }}</textarea>
+                    </div>
+                    <button type = "submit" class = "btn btn-primary">Update</button>
+                    <a class = "btn btn-danger" href = "/remove/{{ ID }}">Delete</a>
+                </form>
+            {% else %}
+                <h1>{{ Title }}</h1>
+                <h5>Added by: {{ Added.first_name }} {{ Added.last_name }}</h5>
+                <h5>Added on: {{ Dates.created_at |date:"Y-m-d" }}</h5>
+                <h5>Updated on: {{ Dates.updated_at |date:"Y-m-d" }}</h5>
+                <h5>Description: {{ Description }}</h5>
+            {% endif %}
+        </div>
+        <div id = "booklist" class = "container col-6 d-inline-block align-top">
+            <h1>Users Who Like This Book</h1>
+            <ul>
+                {% for fave in Faves %}
+                    <li>
+                        {{ fave.first_name }} {{ fave.last_name }}
+                        {% if fave.id == User.id %}
+                            <a href = "/unfavorite/{{ ID }}">Remove from Favorites</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if not User in Faves %}
+                <a class = "d-block" href = "/addfavorite/{{ ID }}">Add to Favorites</a>
+            {% endif %}
+            <p class = "mt-5"><a href = "/main/{{ User.id }}">Back to main page</a></p>
+        </div>
+    </div>
+</body>
+</html>
